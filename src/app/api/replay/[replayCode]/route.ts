@@ -3,10 +3,10 @@ import { replayService } from '@/lib/replay'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { replayCode: string } }
+  { params }: { params: Promise<{ replayCode: string }> }
 ) {
   try {
-    const { replayCode } = params
+    const { replayCode } = await params
     
     if (!replayCode) {
       return NextResponse.json(
