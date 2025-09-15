@@ -15,35 +15,38 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
     }
 
-    // Get friends (accepted friendships)
+    // Get friends (accepted friendships) - using explicit column names
     const { data: friendships, error } = await supabase
       .from('friendships')
       .select(`
         id,
         status,
         created_at,
-        requester:requester_id(id, username, display_name, avatar_url),
-        addressee:addressee_id(id, username, display_name, avatar_url)
+        requester_id,
+        addressee_id,
+        requester:user_profiles!friendships_requester_id_fkey(id, username, display_name, avatar_url),
+        addressee:user_profiles!friendships_addressee_id_fkey(id, username, display_name, avatar_url)
       `)
       .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
       .eq('status', 'accepted')
 
     if (error) {
+      console.error('Supabase error:', error)
       return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
     // Format friends list
     const friends = friendships?.map(friendship => {
-      const isRequester = friendship.requester.id === user.id
+      const isRequester = friendship.requester_id === user.id
       const friend = isRequester ? friendship.addressee : friendship.requester
       
       return {
-        id: friend.id,
+        id: friend?.id,
         profile: friend,
         friendshipId: friendship.id,
         friendsSince: friendship.created_at,
       }
-    }) || []
+    }).filter(friend => friend.id) || [] // Filter out any null friends
 
     return NextResponse.json({ friends })
   } catch (error) {
@@ -92,7 +95,7 @@ export async function POST(request: NextRequest) {
       .from('friendships')
       .select('id, status')
       .or(`and(requester_id.eq.${user.id},addressee_id.eq.${targetUser.id}),and(requester_id.eq.${targetUser.id},addressee_id.eq.${user.id})`)
-      .single()
+      .maybeSingle() // Use maybeSingle instead of single to avoid error when no row found
 
     if (existingFriendship) {
       if (existingFriendship.status === 'accepted') {
