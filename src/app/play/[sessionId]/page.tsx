@@ -1,7 +1,8 @@
+//src/app/play/[sessionId]/page.tsx
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { GameController } from '@/components/GameController'
 import { SessionLobby } from '@/components/SessionLobby'
 import { ScoreDisplay } from '@/components/ScoreDisplay'
@@ -13,16 +14,14 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Trophy } from 'lucide-react'
 import type { GameState, Question, Quiz } from '@/types'
 
-interface GamePageProps {
-  searchParams: { playerId?: string; isHost?: string; hostId?: string }
-}
-
-export default function GamePage({ searchParams }: GamePageProps) {
+export default function GamePage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  
   const sessionId = params.sessionId as string
-  const playerId = searchParams.playerId || searchParams.hostId
-  const isHost = searchParams.isHost === 'true'
+  const playerId = searchParams.get('playerId') || searchParams.get('hostId') || undefined
+  const isHost = searchParams.get('isHost') === 'true'
 
   const [gameState, setGameState] = useState<GameState | null>(null)
   const [questions, setQuestions] = useState<Question[]>([])
@@ -60,6 +59,7 @@ export default function GamePage({ searchParams }: GamePageProps) {
         
         setLoading(false)
       } catch (err) {
+        console.log(err)
         console.error('Failed to initialize game:', err)
         setError('Failed to connect to game session')
         setLoading(false)
@@ -345,7 +345,7 @@ export default function GamePage({ searchParams }: GamePageProps) {
             
             <div className="text-center">
               <h1 className="text-lg sm:text-2xl font-bold text-gray-900">
-                {gameState.session.joinCode}
+                <span className="text-black">{gameState.session.joinCode}</span>
               </h1>
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Session Code

@@ -231,7 +231,7 @@
   - Set up development database reset and migration scripts
   - _Requirements: Development team productivity_
 
-- [x] 25. Implement shareable replay system
+- [-] 25. Implement shareable replay system
 
   - Create replay data storage for completed quiz sessions
   - Build shareable replay links with read-only game playback

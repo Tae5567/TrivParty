@@ -1,3 +1,4 @@
+//src/components/QuizPreview.tsx
 'use client'
 
 import { useState } from 'react'
@@ -78,7 +79,7 @@ export function QuizPreview({ quiz, onStartOver, onUseQuiz }: QuizPreviewProps) 
         window.location.href = `/play/${session.id}?isHost=true&hostId=${session.hostId}`
       } else {
         const error = await response.json()
-        alert(`Failed to create session: ${error.error}`)
+        alert(`Failed to create session: ${error.error}`);
       }
     } catch (error) {
       console.error('Error creating session:', error)
