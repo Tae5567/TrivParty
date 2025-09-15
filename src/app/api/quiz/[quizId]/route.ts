@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { quizId: string } }
-) {
-  const { quizId } = params;
+// Explicit type for the route context
+type RouteContext = {
+  params: {
+    quizId: string;
+  };
+};
+
+export async function GET(request: NextRequest, context: RouteContext) {
+  const { quizId } = context.params;
 
   const { data, error } = await supabase
     .from("quizzes")
