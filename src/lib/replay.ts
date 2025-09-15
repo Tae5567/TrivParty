@@ -1,14 +1,22 @@
-import { createClient } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { Database } from '@/types/database'
-import { GameReplay, CreateReplayData, ShareReplayData, ReplayPlayerScore, ReplayQuestionResult } from '@/types/replay'
+import { 
+  GameReplay, 
+  CreateReplayData, 
+  ShareReplayData, 
+  ReplayPlayerScore, 
+  ReplayQuestionResult 
+} from '@/types/replay'
 
-type SupabaseClient = ReturnType<typeof createClient>
+// Explicit type for the imported supabase client
+type SupabaseClient = typeof supabase
 
 export class ReplayService {
   private supabase: SupabaseClient
 
   constructor() {
-    this.supabase = createClient()
+    // ✅ reuse the singleton Supabase client
+    this.supabase = supabase
   }
 
   /**
@@ -269,8 +277,8 @@ export class ReplayService {
       totalQuestions: dbReplay.total_questions,
       totalPlayers: dbReplay.total_players,
       sessionDurationSeconds: dbReplay.session_duration_seconds || undefined,
-      finalScores: Array.isArray(dbReplay.final_scores) ? dbReplay.final_scores as ReplayPlayerScore[] : [],
-      questionResults: Array.isArray(dbReplay.question_results) ? dbReplay.question_results as ReplayQuestionResult[] : [],
+      finalScores: Array.isArray(dbReplay.final_scores) ? dbReplay.final_scores as unknown as ReplayPlayerScore[] : [],
+      questionResults: Array.isArray(dbReplay.question_results) ? dbReplay.question_results as unknown as ReplayQuestionResult[] : [],
       createdAt: dbReplay.created_at,
       expiresAt: dbReplay.expires_at,
       isPublic: dbReplay.is_public,

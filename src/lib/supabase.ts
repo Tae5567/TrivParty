@@ -71,3 +71,6 @@ export class RealtimeConnectionManager {
     return Array.from(this.channels.keys())
   }
 }
+
+// Re-export createClient so other modules can import it directly
+export { createClient };
