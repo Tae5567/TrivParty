@@ -141,7 +141,7 @@ export function AnswerSubmission({
               animate={{ opacity: 1, scale: 1 }}
               className="space-y-4"
             >
-              <div className="text-6xl">⏭️</div>
+              <div className="text-6xl">⭐️</div>
               <h3 className="text-xl font-semibold">Question Skipped!</h3>
               <p className="text-muted-foreground">
                 You used your Skip Question power-up. Waiting for the next question...
@@ -236,16 +236,14 @@ export function AnswerSubmission({
                   } : {}}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
                 >
-                  <FeedbackButton
+                  <Button
                     onClick={handleSubmit}
                     disabled={!selectedAnswer || disabled || submitted}
                     size="lg"
                     className="w-full sm:w-auto sm:min-w-32"
-                    feedbackType={submitted ? 'success' : 'default'}
-                    pulseOnHover={!submitted}
                   >
                     {submitted ? 'Submitted' : 'Submit Answer'}
-                  </FeedbackButton>
+                  </Button>
                 </motion.div>
               </div>
               
