@@ -3,9 +3,9 @@ import { supabase } from "@/lib/supabase";
 
 export async function GET(
   _request: NextRequest,
-  context: { params: { quizId: string } }
+  context: { params: Record<string, string> }
 ) {
-  const quizId = context.params.quizId;
+  const { quizId } = context.params;
 
   const { data, error } = await supabase
     .from("quizzes")
