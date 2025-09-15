@@ -69,8 +69,8 @@ export default function Home() {
       <main className="relative z-10 container mx-auto px-4 py-12 sm:py-20">
         <div className="text-center mb-16 sm:mb-24">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight">
-            Trivia
-            <span className="block gradient-text">that keeps the Party Alive</span>
+            Think fast.
+            <span className="block gradient-text">Play Loud!</span>
           </h2>
           <p className="text-lg sm:text-xl text-white/80 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed">
             Embark on a Journey of Knowledge Exploration with Our
