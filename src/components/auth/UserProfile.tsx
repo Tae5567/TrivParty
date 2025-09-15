@@ -44,7 +44,7 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
       await signOut()
       onClose()
     } catch (err: unknown) {
-      setError(err.message || 'Failed to sign out')
+      setError(err instanceof Error ? err.message : 'Failed to sign out')
     }
   }
 

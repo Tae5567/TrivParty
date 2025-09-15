@@ -88,7 +88,7 @@ export function QuestionDisplay({
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -50 }}
-        transition={getAnimationConfig({ duration: 0.3, ease: "easeInOut" })}
+        transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
       >
         <Card className="w-full max-w-4xl mx-auto">
           <CardHeader className="pb-4 sm:pb-6">
@@ -158,7 +158,7 @@ export function QuestionDisplay({
                   initial={{ opacity: 0, height: 0, marginTop: 0 }}
                   animate={{ opacity: 1, height: 'auto', marginTop: '1rem' }}
                   exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  transition={{ duration: 0.4, ease: [0.4, 0.0, 0.2, 1] }}
                   className="sm:mt-6 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
                 >
                   <motion.h4 
