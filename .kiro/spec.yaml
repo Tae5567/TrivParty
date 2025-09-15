@@ -1,0 +1,70 @@
+name: TrivParty
+description: |
+  TrivParty is a web app that generates and hosts multiplayer trivia quizzes from any Wikipedia page or YouTube transcript.
+  Users paste a link, and the app generates multiple-choice questions with answers and explanations. Friends can join via a
+  session link and compete in real-time. The final leaderboard shows scores, making it a fun and educational party game.
+
+stack:
+  frontend:
+    - Next.js (App Router, TypeScript)
+    - TailwindCSS + shadcn/ui
+  backend:
+    - Next.js API routes (Node.js/Express style)
+    - OpenAI API (GPT-4o-mini) for quiz generation
+    - Supabase (Postgres DB + Realtime + Auth)
+  hosting:
+    - Vercel (frontend + API routes)
+    - Supabase Cloud (database and realtime)
+
+entities:
+  - name: Quiz
+    fields:
+      - id: uuid
+      - source_url: string
+      - created_at: timestamp
+  - name: Question
+    fields:
+      - id: uuid
+      - quiz_id: uuid (FK -> Quiz)
+      - text: string
+      - options: jsonb
+      - correct_answer: string
+      - explanation: string
+  - name: Session
+    fields:
+      - id: uuid
+      - quiz_id: uuid (FK -> Quiz)
+      - host_id: uuid
+      - created_at: timestamp
+  - name: Player
+    fields:
+      - id: uuid
+      - session_id: uuid (FK -> Session)
+      - nickname: string
+      - score: int
+
+tasks:
+  - name: Scaffold Next.js + Tailwind + shadcn/ui
+    description: Generate the base Next.js project with TailwindCSS configured, shadcn/ui installed, and TypeScript enabled.
+  - name: Supabase schema setup
+    description: Generate SQL migrations for Quiz, Question, Session, and Player tables with relationships.
+  - name: API route - Fetch Wikipedia text
+    description: Implement API endpoint that extracts raw text from a given Wikipedia URL.
+  - name: API route - Fetch YouTube transcript
+    description: Implement API endpoint that retrieves transcript from a given YouTube video.
+  - name: API route - Generate quiz
+    description: API endpoint that takes raw text, calls OpenAI API, and returns structured quiz (questions, options, correct answers, explanations).
+  - name: Quiz play page
+    description: Frontend page to render quiz questions and allow single-player interaction.
+  - name: Session hosting
+    description: Backend + frontend support for creating sessions, generating join links, and allowing players to connect.
+  - name: Realtime multiplayer
+    description: Integrate Supabase Realtime for broadcasting current question, answers submitted, and score updates.
+
+hooks:
+  - name: Validate quiz
+    trigger: after quiz generation
+    action: Cross-check that the correct answer exists in the source text before saving.
+  - name: Deploy Vercel preview
+    trigger: on push
+    action: Automatically deploy preview build to Vercel.
